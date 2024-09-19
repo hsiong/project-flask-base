@@ -10,17 +10,12 @@
 + download pytorch: https://download.pytorch.org/whl/torch/
 + pytorch torchvision capability: https://pytorch.org/get-started/previous-versions/
 
+
 ## requirements (Machine Learning)
 
-### windows
-+ pytorch: https://download.pytorch.org/whl/cu118/torch-2.3.1%2Bcu118-cp312-cp312-win_amd64.whl#sha256=f44c7b64d990a6b1a382d1cd63c359806153974e7db8d16f6780645a8a9c9fe0
 ```shell
  python --version
- pip install init\torch-2.3.1+cu118-cp312-cp312-win_amd64.whl
-
- pip uninstall numpy
- pip install numpy==1.26.4 # 模型使用的老版本 numpy
- 
+ pip install torch==2.3.1+cu118 --index-url https://download.pytorch.org/whl/cu118
  pip install -r requirements.txt # pip install -e .
 ```
 
@@ -30,12 +25,8 @@
 + pytorch: https://download.pytorch.org/whl/cu118/torch-2.3.1%2Bcu118-cp312-cp312-win_amd64.whl#sha256=f44c7b64d990a6b1a382d1cd63c359806153974e7db8d16f6780645a8a9c9fe0
 ```shell
  python --version
- pip install init\torch-2.3.1+cu118-cp312-cp312-win_amd64.whl
+ pip install torch==2.3.1+cu118 --index-url https://download.pytorch.org/whl/cu118
  pip uninstall torchvision torchaudio
  pip install torchvision==0.18.1+cu118 --index-url https://download.pytorch.org/whl/cu118
- 
- pip uninstall numpy
- pip install numpy==1.26.4 # 模型使用的老版本 numpy
- 
  pip install -r requirements.txt # pip install -e .
 ```

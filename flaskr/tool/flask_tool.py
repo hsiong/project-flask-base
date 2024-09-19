@@ -49,7 +49,7 @@ def create_app():
     redis_url = f"redis://:{redis_password}@{redis_host}:{redis_port}/{redis_db}"
     app.config['REDIS_URL'] = redis_url
     app.config['REDIS_OPTIONS'] = {
-        'retry_on_timeout': True,  # 重试
+        # 'retry_on_timeout': True,  # 关闭自动重试, 本选项在网络异常时会导致线程无法释放
         'socket_keepalive': True,  # 启用 Keepalive 以保持长连接
     }
     app.config['REDIS_SOCKET_TIMEOUT'] = 10  # 增加 Redis 超时设置

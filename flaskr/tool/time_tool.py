@@ -13,6 +13,6 @@ def str_to_datetime(date_str):
     time = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
     return time
     
-def get_time_str():
+def get_datetime_str():
     time = datetime.now()
     return time.strftime('%Y-%m-%d %H:%M:%S')

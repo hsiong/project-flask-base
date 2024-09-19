@@ -75,7 +75,7 @@ class RecognitionParam(BaseModel):
             
             prompt = model.get_prompt(prompt)
             recognition = Recognition(id=next(generator),
-                                      create_time=time_tool.get_time_str(),
+                                      create_time=time_tool.get_datetime_str(),
                                       model = model,
                                       camera_id=camera.camera_id,
                                       camera_size=json.dumps(camera.camera_size),
@@ -91,7 +91,7 @@ class RecognitionParam(BaseModel):
             parse_result.append(recognition)
         
         task = Task(id=task_id,
-                    create_time=time_tool.get_time_str(),
+                    create_time=time_tool.get_datetime_str(),
                     business_id=super_obj.business_id,
                     system_code=super_obj.system_code,
                     callback_url=super_obj.callback_url,

@@ -15,9 +15,13 @@ PyYAML
 snowflake-id  # 雪花算法生成 ID
 Flask-APScheduler # 定时任务
 
+
 # multi-thread
 gevent
 gunicorn
 
 # json
 pydantic
+
+# ML & DL
+numpy==1.26.4

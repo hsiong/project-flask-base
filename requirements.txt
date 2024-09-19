@@ -1,9 +1,9 @@
 # onnx
 pytest
-onnx
-onnxruntime-gpu
-supervision
-transformers # from tokenizers import Tokenizer
+#onnx
+#onnxruntime-gpu
+#supervision
+#transformers # from tokenizers import Tokenizer
 
 # flask
 Flask

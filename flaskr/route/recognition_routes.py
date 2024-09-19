@@ -4,7 +4,7 @@ from flaskr.config import default_config
 from flaskr.schema.recognition_schema import RecognitionParam, RedisRecognitionSchema
 from flaskr.tool.json_tool import *
 
-api = Blueprint(default_config.CONTEXT_PATH_COW, __name__)  # 注册蓝图
+api = Blueprint(default_config.CONTEXT_PATH, __name__)  # 注册蓝图
 
 
 # 创建新的识别记录

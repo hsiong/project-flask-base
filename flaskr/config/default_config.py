@@ -8,7 +8,6 @@ NACOS_PASSWORD = "pwd" # 替换为你的 Nacos 密码
 NACOS_GROUP = "AI_COW"    # 替换为你的 Nacos Group
 
 CONTEXT_PATH = 'context-path' # 替换为你的API上下文路径
-CONTEXT_PATH_COW = CONTEXT_PATH + '/api' # 替换为你的API上下文路径
 DATABASE_PREFIX = 'ai_db' # 替换为你的数据库前缀
 
 class DefaultConfig:

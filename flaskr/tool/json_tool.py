@@ -5,7 +5,7 @@ from typing import List, Type, TypeVar, Union, Optional
 from pydantic import BaseModel
 from sqlalchemy import Enum as SQLAlchemyEnum
 
-from flaskr.tool.request_tool import ret_success_data, ret_error
+from flaskr.tool.request_escher_tool import ret_success_data, ret_error
 
 T = TypeVar('T', bound=BaseModel)  # 定义泛型 T，要求继承自 BaseModel
 

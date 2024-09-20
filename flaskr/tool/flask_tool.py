@@ -11,7 +11,7 @@ from flaskr.service import inference_grounding_dino_service, inference_damoyolo_
 from flaskr.service.schedule_service import *
 from flaskr.tool import auth_tool
 from flaskr.tool.auth_tool import AuthConfig
-from flaskr.tool.mysql_tool import init_mysql, keep_mysql_connection_alive
+from flaskr.tool.mysql_tool import init_mysql
 from flaskr.tool.redis_tool import ProjectRedis
 
 
@@ -69,7 +69,7 @@ def create_app():
     # 初始化定时任务
     scheduler = APScheduler()
     scheduler.init_app(app)
-    # scheduler.add_job(id='keep_mysql_connection_alive', func=keep_mysql_connection_alive, args=[app, db], trigger='interval', minutes=5) # mysql 连接
+    # scheduler.add_job(id='keep_mysql_connection_alive', func=scheduled_task, args=[app, db], trigger='interval', minutes=5) # mysql 连接
     scheduler.start()
     
     return app, args

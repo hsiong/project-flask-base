@@ -157,18 +157,3 @@ def init_mysql(app, nacos_config_dict):
         db.session.remove()  # 关闭会话
         
     return db
-
-
-def keep_mysql_connection_alive(app, db_session):
-    """
-    定期执行的任务，发送简单的查询到 MySQL 来保持连接活跃。
-    """
-    with app.app_context():  # 手动推送应用上下文
-        try:
-            # 执行简单的查询，例如 'SELECT 1'
-            db_session.session.execute('SELECT 1')
-            db_session.session.commit()
-            print("MySQL connection kept alive.")
-        except Exception as e:
-            print(f"Error keeping MySQL connection alive: {e}")
-            db_session.session.rollback()

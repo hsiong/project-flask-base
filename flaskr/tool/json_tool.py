@@ -10,6 +10,19 @@ from flaskr.tool.request_escher_tool import ret_success_data, ret_error
 T = TypeVar('T', bound=BaseModel)  # 定义泛型 T，要求继承自 BaseModel
 
 
+def dict_to_json(data):
+    """
+    将 Python 字典转换为 JSON 字符串的通用函数。
+
+    :param data: Python 字典
+    :return: JSON 字符串
+    """
+    # 如果数据是列表，转换为 Pydantic 模型实例的列表
+    if isinstance(data, list):
+        return [sensor.dict() for sensor in data]
+    
+    return data.json()
+
 def json_to_dict(data:str, model_class: Type[T]) -> Union[T, List[T]]:
     """
     将 JSON 字符串转换为 Pydantic 模型实例的通用函数，支持单个对象和对象列表。

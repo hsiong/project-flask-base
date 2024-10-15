@@ -1,13 +1,11 @@
 import argparse
 
 import nacos
-import onnxruntime
 import yaml
 from flask import Flask
 from flask_apscheduler import APScheduler
 
 from flaskr.config import default_config
-from flaskr.service import inference_grounding_dino_service, inference_damoyolo_service
 from flaskr.service.schedule_service import *
 from flaskr.tool import auth_tool
 from flaskr.tool.auth_tool import AuthConfig

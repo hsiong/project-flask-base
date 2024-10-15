@@ -14,6 +14,7 @@ nacos-sdk-python
 PyYAML
 snowflake-id  # 雪花算法生成 ID
 Flask-APScheduler # 定时任务
+requests
 
 
 # multi-thread

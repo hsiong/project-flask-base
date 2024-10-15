@@ -6,22 +6,6 @@ from pydantic import BaseModel
 from flaskr.config import redis_constant
 
 
-class CallbackRequestCow(BaseModel):
-    class CameraResult(BaseModel):
-        camera_id: str
-        image_url: str
-        recognition_url: str  # 识别图片url
-        recognition_result: List[Any]  # 识别结果
-        recognition_time: str  # 识别耗时 ms
-        completion_time: str  # 完成时间，格式为YYYY-MM-DD HH:MM:SS
-        error_msg: str  # 错误信息
-    
-    business_id: str  # 业务ID
-    task_id: str  # 任务id
-    task_num: int  # 识别总数
-    cameras: List[CameraResult]
-
-
 executor = ThreadPoolExecutor(max_workers=1)
 
 

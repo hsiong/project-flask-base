@@ -76,7 +76,7 @@ def ret_error(message):
     return Ret(code=500, message='', data=message, success=False)
 
 
-class Ret(Generic[T], BaseModel):
+class Ret(BaseModel, Generic[T]):
     code: int
     message: str
     data: Optional[T] = None

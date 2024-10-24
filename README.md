@@ -13,12 +13,18 @@
 
 ## requirements (Machine Learning)
 
+> https://download.pytorch.org/whl/cu118
+
 ### windows
 ```shell
  python --version
  pip install D:\BaiduNetdiskDownload\torch-2.3.1+cu118-cp312-cp312-win_amd64.whl # 改为你自己的路径
  pip install -r requirements.txt # pip install -e .
 ```
+### linux
+
+https://download.pytorch.org/whl/cu118/torch-2.3.1%2Bcu118-cp312-cp312-linux_x86_64.whl#sha256=6c03ff41879674cbd661b598cec80fb5e6f7faa225624732a2a197b5471dbd38
+
 
 ## requirements (Deep Learning)
 

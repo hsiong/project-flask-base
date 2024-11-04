@@ -1,11 +1,11 @@
 import json
 from enum import Enum
-from typing import List, Type, TypeVar, Union, Optional
+from typing import List, Optional, Type, TypeVar, Union
 
 from pydantic import BaseModel
 from sqlalchemy import Enum as SQLAlchemyEnum
 
-from flaskr.tool.request_escher_tool import ret_success_data, ret_error
+from flaskr.tool.request_tool import ret_error, ret_success_data
 
 T = TypeVar('T', bound=BaseModel)  # 定义泛型 T，要求继承自 BaseModel
 

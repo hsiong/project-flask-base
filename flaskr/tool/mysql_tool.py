@@ -141,7 +141,7 @@ def init_mysql(app, nacos_config_dict):
     except Exception as e:
         raise Exception(f"Can not connect MySQL Server: {mysql_config['url'].split('//')[1]}" + str(e))
     
-    with app.app_context():
+    with app.app_context(): # 可以在没有实际请求的情况下使用 current_app、g 等与应用实例相关的变量与对象。
         # 注册事件监听器
         _check_and_update_tables()  # 检查并更新表结构
         _register_service(app)  # 注册服务

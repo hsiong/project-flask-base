@@ -26,7 +26,7 @@ class AuthConfig:
    
 auth_config = AuthConfig()
  
-def escher_auth(path, method: HttpMethod):
+def sign(path, method: HttpMethod):
     '''
     Escher 鉴权
     Args:

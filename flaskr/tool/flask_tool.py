@@ -3,11 +3,9 @@ import nacos
 import yaml
 from flask import Flask
 from flask_apscheduler import APScheduler
-from flaskr.tool.auth_tool import AuthConfig
 
 from flaskr.config import default_config
 from flaskr.service.schedule_service import *
-from flaskr.tool import auth_tool
 from flaskr.tool.mysql_tool import init_mysql
 from flaskr.tool.redis_tool import ProjectRedis
 

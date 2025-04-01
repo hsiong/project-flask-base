@@ -40,5 +40,5 @@ def _recognize_queue_task(app):
         except Exception as e:
             raise e
         finally:
-            redis_client.release_lock(redis_constant.QUEUE_COW_LOCK, identifier)
+            redis_client.release_lock(redis_constant.QUEUE_LOCK, identifier)
         

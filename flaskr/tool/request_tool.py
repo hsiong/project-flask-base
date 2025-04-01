@@ -62,7 +62,7 @@ def _send_post_request(url: str, data, headers: dict, retries: int = 2):
 
 
 async def async_post_request(url: str, data):
-    # 使用线程进行异步请求，不影响主线程
+    # 使用协程进行异步请求，不影响主线程
     thread = threading.Thread(target=_send_post_request, args=(url, data, {}))
     thread.start()
 

@@ -54,6 +54,7 @@ def create_app():
         "sql_flag": os_env_dict.get("SQL_LOG", False)
     }
     db = init_mysql(app, mysql_config)
+    app.db = db
     
     # 初始化定时任务
     scheduler = APScheduler()

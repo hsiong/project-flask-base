@@ -66,6 +66,7 @@ def create_app():
     mysql_config = nacos_config_dict.get('datasource', {})
     mysql_config['url'] = mysql_config['url'].split('//')[1]
     db = init_mysql(app, mysql_config)
+    app.db = db
     
     # 初始化定时任务
     scheduler = APScheduler()

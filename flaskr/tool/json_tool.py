@@ -11,7 +11,7 @@ from flaskr.tool.request_tool import ret_error, ret_success_data
 T = TypeVar('T', bound=BaseModel)  # 定义泛型 T，要求继承自 BaseModel
 
 
-def dict_to_json(data):
+def dict_to_str(data) -> str:
     """
     将 Python 字典转换为 JSON 字符串的通用函数。
 
@@ -25,7 +25,30 @@ def dict_to_json(data):
     return data.json()
 
 
-def json_to_dict(data: str, model_class: Type[T]) -> Union[T, List[T]]:
+def obj_to_str(data: Union[BaseModel, List[BaseModel]]) -> str:
+    '''
+    将字典或包含 Pydantic 模型的列表转换为 JSON 字符串
+    Args:
+        data: 单个 Pydantic 模型实例或 Pydantic 模型实例的列表
+    Returns:
+        JSON 字符串
+    '''
+    if isinstance(data, list):
+        # 对列表中的每个 BaseModel 对象调用 .json()
+        return json.dumps([item.json() for item in data])
+    else:
+        # 直接将单个 BaseModel 对象转换为 JSON
+        return data.json()
+
+
+def obj_to_dict(data: Union[BaseModel, List[BaseModel]]) -> Union[dict, List[dict]]:
+    if isinstance(data, list):
+        return [item.dict() for item in data]
+    else:
+        return data.dict()
+
+
+def str_to_dict(data: str, model_class: Type[T]) -> Union[T, List[T]]:
     """
     将 JSON 字符串转换为 Pydantic 模型实例的通用函数，支持单个对象和对象列表。
 
@@ -49,22 +72,6 @@ def json_to_dict(data: str, model_class: Type[T]) -> Union[T, List[T]]:
     return model_class.parse_obj(data)
 
 
-def dict_to_json_str(data: Union[BaseModel, List[BaseModel]]):
-    '''
-    将字典或包含 Pydantic 模型的列表转换为 JSON 字符串
-    Args:
-        data: 单个 Pydantic 模型实例或 Pydantic 模型实例的列表
-    Returns:
-        JSON 字符串
-    '''
-    if isinstance(data, list):
-        # 对列表中的每个 BaseModel 对象调用 .json()
-        return json.dumps([item.json() for item in data])
-    else:
-        # 直接将单个 BaseModel 对象转换为 JSON
-        return data.json()
-
-
 def _process_data(data, enum_columns):
     """
     处理数据，将枚举字段的字符串值转换为对应的枚举类型。
@@ -79,7 +86,7 @@ def _process_data(data, enum_columns):
     return processed_data
 
 
-def json_to_model(data, model_class):
+def str_to_model(data, model_class):
     """
     将 JSON 字符串转换为 SQLAlchemy 模型实例的通用函数，支持枚举类型。
     Args:
@@ -110,7 +117,7 @@ def json_to_model(data, model_class):
     return model_instance
 
 
-def model_to_json_str(data) -> str:
+def model_to_str(data) -> str:
     '''
     使用 SQLAlchemy 的内置方法转换为 JSON 字符串，支持单个模型和列表
     Args:
@@ -118,10 +125,10 @@ def model_to_json_str(data) -> str:
     Returns:
         JSON 字符串
     '''
-    return json.dumps(model_to_json_dict(data))
+    return json.dumps(model_to_dict(data))
 
 
-def model_to_json_dict(data):
+def model_to_dict(data):
     '''
     使用 SQLAlchemy 的内置方法转换为 JSON 字符串，支持单个模型和列表
     Args:
@@ -231,7 +238,7 @@ def return_success_with_model(data):
     Returns:
 
     '''
-    return _ret_json_success(model_to_json_dict(data))
+    return _ret_json_success(model_to_dict(data))
 
 
 def return_success_data(data):

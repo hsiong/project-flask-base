@@ -17,12 +17,12 @@ class RedisRecognitionSchema(BaseModel):
     recognition_list: Optional[List] = []  # 待识别记录 json，提供默认值为空字符串
     
     def set_self(self, task: Task, recognition_list: List[Recognition]):
-        self.task = json_tool.model_to_json_dict(task)
-        self.recognition_list = json_tool.model_to_json_dict(recognition_list)
+        self.task = json_tool.model_to_dict(task)
+        self.recognition_list = json_tool.model_to_dict(recognition_list)
     
     def get_self(self):
-        task = json_tool.json_to_model(self.task, Task)
-        recognition_list = json_tool.json_to_model(self.recognition_list, Recognition)
+        task = json_tool.str_to_model(self.task, Task)
+        recognition_list = json_tool.str_to_model(self.recognition_list, Recognition)
         return task, recognition_list
 
 

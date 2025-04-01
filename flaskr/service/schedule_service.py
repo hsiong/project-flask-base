@@ -33,7 +33,7 @@ def _recognize_queue_task(app):
         try:
             identifier = redis_client.acquire_lock(redis_constant.QUEUE_LOCK)  # 获取分布式锁, 这里也会产生连接异常
             if identifier:
-                data = redis_client.get_queue(redis_constant.QUEUE_BUSSINESS)  # 获取识别队列
+                data = redis_client.pop_queue(redis_constant.QUEUE_BUSSINESS)  # 获取识别队列
                 None # 业务代码
             else:
                 print("Failed to acquire lock. Task not executed.")

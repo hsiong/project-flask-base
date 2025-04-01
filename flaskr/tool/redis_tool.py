@@ -165,6 +165,8 @@ class ProjectRedis(FlaskRedis):
 
         '''
         task_object_json, task_id = self.get_queue(key)
+        if not task_object_json:
+            return None
         self.remove_queue_object(key, task_id)
         return task_object_json
     

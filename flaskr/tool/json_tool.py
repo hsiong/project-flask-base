@@ -241,7 +241,7 @@ def return_success_with_model(data):
     return _ret_json_success(model_to_dict(data))
 
 
-def return_success_data(data):
+def return_success_dict(data):
     '''
     返回成功
     Args:

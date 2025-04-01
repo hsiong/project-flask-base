@@ -1,6 +1,6 @@
 services:
-  # The postgres database.
-  db:
+  # The mysql database.
+  mysql:
     image: mysql:8.0
     restart: always
     env_file:
@@ -27,7 +27,7 @@ services:
   
   
   #  # The postgres database.
-#  db:
+#  postgres:
 #    image: postgres:15-alpine
 #    restart: always
 #    env_file:

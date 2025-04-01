@@ -65,7 +65,8 @@ def create_app():
 		"MYSQL_PASSWORD": os.getenv("MYSQL_PASSWORD"),
 		"MYSQL_HOST": os.getenv("MYSQL_HOST"),
 		"MYSQL_PORT": int(os.getenv("MYSQL_PORT", 3306)),
-		"MYSQL_DB": os.getenv("MYSQL_DB")
+		"MYSQL_DB": os.getenv("MYSQL_DB"),
+		"SQL_LOG": os.getenv("SQL_LOG", False)
 	}
 	db = init_mysql(app, mysql_config)
 	

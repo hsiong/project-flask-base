@@ -19,7 +19,7 @@ def _register_service(app):
     from flaskr.service.b_task_service import TaskService
     
     app.task_service = TaskService()  # 任务服务
-    app.recognition_service = RecognitionService(app.task_service)  # 识别服务
+    app.recognition_service = RecognitionService(app.task_service)  # 识别服务, 依赖任务服务
 
 def create_app():
     # 解析命令行参数

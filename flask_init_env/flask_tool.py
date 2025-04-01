@@ -9,6 +9,7 @@ from flaskr.tool.redis_tool import ProjectRedis
 
 
 def load_env(filepath=".env"):
+    os_env_dict = {}
     if not os.path.exists(filepath):
         return
     with open(filepath) as f:
@@ -18,7 +19,9 @@ def load_env(filepath=".env"):
                 continue
             if '=' in line:
                 key, value = line.split('=', 1)
-                os.environ[key.strip()] = value.strip()
+                os_env_dict[key.strip()] = value.strip()
+    
+    return os_env_dict
 
 
 def _register_service(app):
@@ -33,19 +36,19 @@ def _register_service(app):
 def create_app():
     # 解析命令行参数
     parser = argparse.ArgumentParser(description="Flask with .env.dev Configuration")
-    parser.add_argument('--env', type=str, default=os.getenv("FLASK_ENV", "dev"),
-                        help='Set the environment: dev, test, prod')
+    parser.add_argument('--env', type=str, default='dev', help='Set the environment: dev, test, prod')
+
     args = parser.parse_args()
     env = args.env
     # 加载 .env.dev 配置文件
-    load_env(filepath=f".env.{env}")
+    os_env_dict = load_env(filepath=f".env.{env}")
     
     # 初始化 Flask 应用
     app = Flask(__name__)
     app.config.from_object("config.default_config.DefaultConfig")
     
     # 提取 Redis 配置并应用到 Flask
-    redis_url = f"redis://:{os.getenv('REDIS_PASSWORD')}@{os.getenv('REDIS_HOST')}:{os.getenv('REDIS_PORT')}/{os.getenv('REDIS_DB')}"
+    redis_url = f"redis://:{os_env_dict.get('REDIS_PASSWORD')}@{os_env_dict.get('REDIS_HOST')}:{os_env_dict.get('REDIS_PORT')}/{os_env_dict.get('REDIS_DB')}"
     app.config['REDIS_URL'] = redis_url
     app.config['REDIS_OPTIONS'] = {
         'socket_keepalive': True,
@@ -55,14 +58,14 @@ def create_app():
     redis_client.init_app(app)
     
     # 提取端口
-    args.port = int(os.getenv("FLASK_PORT", 5000))
+    args.port = int(os_env_dict.get("FLASK_PORT", 5000))
     
     # 初始化 MySQL 配置
     mysql_config = {
-        "username": os.getenv("MYSQL_USER"),
-        "password": os.getenv("MYSQL_PASSWORD"),
-        "url": f"{os.getenv("MYSQL_HOST")}:{int(os.getenv("MYSQL_PORT", 3306))}/{os.getenv("MYSQL_DB")}",
-        "sql_flag": os.getenv("SQL_LOG", False)
+        "username": os_env_dict.get("MYSQL_USER"),
+        "password": os_env_dict.get("MYSQL_PASSWORD"),
+        "url": f"{os_env_dict.get("MYSQL_HOST")}:{int(os_env_dict.get("MYSQL_PORT", 3306))}/{os_env_dict.get("MYSQL_DB")}",
+        "sql_flag": os_env_dict.get("SQL_LOG", False)
     }
     db = init_mysql(app, mysql_config)
     

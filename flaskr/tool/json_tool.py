@@ -89,6 +89,9 @@ def json_to_model(data, model_class):
         SQLAlchemy 模型实例
     """
     
+    if isinstance(data, bytes):
+        data = data.decode('utf-8')
+    
     # 如果数据是字符串，先将其转换为字典
     if isinstance(data, str):
         data = json.loads(data)

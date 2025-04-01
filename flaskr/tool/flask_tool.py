@@ -13,6 +13,14 @@ from flaskr.tool.mysql_tool import init_mysql
 from flaskr.tool.redis_tool import ProjectRedis
 
 
+def _register_service(app):
+    # 注册服务, 保证上下文中
+    from flaskr.service.b_recognition_service import RecognitionService
+    from flaskr.service.b_task_service import TaskService
+    
+    app.task_service = TaskService()  # 任务服务
+    app.recognition_service = RecognitionService(app.task_service)  # 识别服务
+
 def create_app():
     # 解析命令行参数
     parser = argparse.ArgumentParser(description="Flask with Nacos Configuration")
@@ -69,6 +77,10 @@ def create_app():
     scheduler.init_app(app)
     # scheduler.add_job(id='keep_mysql_connection_alive', func=scheduled_task, args=[app, db], trigger='interval', minutes=5) # mysql 连接
     scheduler.start()
+    
+    with app.app_context(): # 可以在没有实际请求的情况下使用 current_app、g 等与应用实例相关的变量与对象。
+        # 注册事件监听器
+        _register_service(app)  # 注册服务
     
     return app, args
 

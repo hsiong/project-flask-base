@@ -108,13 +108,7 @@ def _check_and_update_tables():
             _create_table_for_model(model)
 
 
-def _register_service(app):
-    # 注册服务, 保证上下文中
-    from flaskr.service.b_recognition_service import RecognitionService
-    from flaskr.service.b_task_service import TaskService
-    
-    app.task_service = TaskService()  # 任务服务
-    app.recognition_service = RecognitionService(app.task_service)  # 识别服务
+
     
 
 
@@ -144,7 +138,6 @@ def init_mysql(app, nacos_config_dict):
     with app.app_context(): # 可以在没有实际请求的情况下使用 current_app、g 等与应用实例相关的变量与对象。
         # 注册事件监听器
         _check_and_update_tables()  # 检查并更新表结构
-        _register_service(app)  # 注册服务
     
     # 自动提交或回滚事务: @app.teardown_appcontext 是 Flask 提供的一个装饰器，
     # 用来注册在应用上下文结束时自动执行的函数。这个机制的核心原理是管理在每个请求的生命周期内需要处理的任务，如数据库事务的提交、回滚、以及清理工作。

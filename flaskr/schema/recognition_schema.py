@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 from flaskr.entity.recognition_entity import Recognition
 from flaskr.entity.task_entity import Task
-from flaskr.config import task_status_enum
+from flaskr.constant import task_status_enum
 
 from flaskr.tool import json_tool, time_tool
 from flaskr.tool.mysql_tool import generator

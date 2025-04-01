@@ -4,8 +4,6 @@ from sqlalchemy import Column, String, JSON, BigInteger, Enum
 from sqlalchemy.orm import declarative_base
 
 from flaskr.config import default_config
-
-from flaskr.config.prompt_enum import ModelType
 from flaskr.tool import json_tool
 
 _Base = declarative_base() # 创建一个 Alchemy 基类, 不是全局

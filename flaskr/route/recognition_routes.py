@@ -18,7 +18,7 @@ def create_recognition():
     return return_success_dict(data_task)  # 返回新记录的 JSON 响应
 
 
-# 获取识别记录通过 ID
+# 通过 ID 获取识别记录
 @api.route('/recognition/<string:id>', methods=['GET'])
 def get_recognition(id):
     recognition = current_app.recognition_service.get_recognition_by_id(id)

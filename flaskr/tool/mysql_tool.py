@@ -42,6 +42,7 @@ def _add_column_to_table(table_name, column):
     '''
     column_type = column.type.compile(dialect=db.engine.dialect)
     nullable = "NULL" if column.nullable else "NOT NULL"
+    comment = column.comment if column.comment else ""
     # 根据列类型处理默认值
     if column.default is not None:
         default_value = column.default.arg
@@ -55,7 +56,7 @@ def _add_column_to_table(table_name, column):
     else:
         default = ""
     
-    alter_stmt = f'ALTER TABLE {table_name} ADD COLUMN {column.name} {column_type} {nullable} {default};'
+    alter_stmt = f"ALTER TABLE {table_name} ADD COLUMN {column.name} {column_type} {nullable} {default} COMMENT '{comment}';"
     
     with db.engine.connect() as conn:
         conn.execute(text(alter_stmt))
@@ -75,8 +76,9 @@ def _create_table_for_model(model):
     # 创建新的列定义，而不是使用已经存在的列对象
     from sqlalchemy import Column
     new_columns = [
-        Column(name=col.name, type_=col.type, nullable=col.nullable, primary_key=col.primary_key, unique=col.unique)
-        for col in existing_columns]
+        Column(name=column.name, type_=column.type, nullable=column.nullable, primary_key=column.primary_key,
+               unique=column.unique, comment=column.comment if column.comment else "")
+        for column in existing_columns]
     
     table = Table(table_name, metadata, *new_columns)
     
@@ -108,10 +110,6 @@ def _check_and_update_tables():
             _create_table_for_model(model)
 
 
-
-    
-
-
 def init_mysql(app, mysql_config):
     '''
     初始化 MySQL
@@ -124,10 +122,10 @@ def init_mysql(app, mysql_config):
     # 提取 MySQL 配置并初始化 SQLAlchemy
     mysql_url = f"mysql+pymysql://{mysql_config['username']}:{mysql_config['password']}@{mysql_config['url']}"
     app.config['SQLALCHEMY_DATABASE_URI'] = mysql_url
-    app.config['SQLALCHEMY_ECHO'] = mysql_config.get('SQL_LOG', False)
+    app.config['SQLALCHEMY_ECHO'] = mysql_config.get('sql_flag', False)
     # 当 pool_pre_ping 设置为 True 时，SQLAlchemy 会在每次获取连接之前发出一个轻量的 "ping" 请求（通常是 SELECT 1）。如果连接已经失效，SQLAlchemy 会丢弃该连接并从池中获取或创建一个新的连接。这样可以避免因为数据库连接长时间空闲后失效导致的错误。
     # 自动回收旧连接，防止连接被服务器关闭
-    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True,  'pool_recycle': 300}
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_pre_ping': True, 'pool_recycle': 300}
     try:
         global db
         db = SQLAlchemy(app)
@@ -135,7 +133,7 @@ def init_mysql(app, mysql_config):
     except Exception as e:
         raise Exception(f"Can not connect MySQL Server: {mysql_config['url'].split('//')[1]}" + str(e))
     
-    with app.app_context(): # 可以在没有实际请求的情况下使用 current_app、g 等与应用实例相关的变量与对象。
+    with app.app_context():  # 可以在没有实际请求的情况下使用 current_app、g 等与应用实例相关的变量与对象。
         # 注册事件监听器
         _check_and_update_tables()  # 检查并更新表结构
     
@@ -148,5 +146,5 @@ def init_mysql(app, mysql_config):
         else:
             db.session.commit()  # 接口正常返回, 提交
         db.session.remove()  # 关闭会话
-        
+    
     return db

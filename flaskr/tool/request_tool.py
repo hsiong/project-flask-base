@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from io import BytesIO
 from typing import Optional
 
-import cv2
 import numpy as np
 import requests
 from pydantic import BaseModel
@@ -81,6 +80,7 @@ def upload_image(image: np.ndarray, url: str, headers: dict):
     Response: 服务器的响应。
     """
     # 将图像编码为字节流
+    import cv2
     _, buffer = cv2.imencode('.jpg', image)
     file_bytes = BytesIO(buffer)
     

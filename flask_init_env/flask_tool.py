@@ -4,7 +4,7 @@ import os
 from flask import Flask
 from flask_apscheduler import APScheduler
 
-from flaskr.tool.json_tool import load_env
+from flaskr.tool import env_tool
 from flaskr.tool.mysql_tool import init_mysql
 from flaskr.tool.redis_tool import ProjectRedis
 
@@ -27,7 +27,7 @@ def create_app():
     args = parser.parse_args()
     env = args.env
     # 加载 .env.dev 配置文件
-    os_env_dict = load_env(filepath=f".env.{env}")
+    os_env_dict = env_tool.load_env(filepath=f".env.{env}")
     
     # 初始化 Flask 应用
     app = Flask(__name__)

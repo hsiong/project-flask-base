@@ -15,7 +15,7 @@ def create_recognition():
         data_task = current_app.recognition_service.insert_recognition(redis_recognition_schema)  # 插入新记录
     except Exception as e:
         return return_error(e) # todo 全局异常捕获
-    return return_success_data(data_task)  # 返回新记录的 JSON 响应
+    return return_success_dict(data_task)  # 返回新记录的 JSON 响应
 
 
 # 获取识别记录通过 ID

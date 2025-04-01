@@ -59,12 +59,10 @@ def create_app():
     
     # 初始化 MySQL 配置
     mysql_config = {
-        "MYSQL_USER": os.getenv("MYSQL_USER"),
-        "MYSQL_PASSWORD": os.getenv("MYSQL_PASSWORD"),
-        "MYSQL_HOST": os.getenv("MYSQL_HOST"),
-        "MYSQL_PORT": int(os.getenv("MYSQL_PORT", 3306)),
-        "MYSQL_DB": os.getenv("MYSQL_DB"),
-        "SQL_LOG": os.getenv("SQL_LOG", False)
+        "username": os.getenv("MYSQL_USER"),
+        "password": os.getenv("MYSQL_PASSWORD"),
+        "url": f"{os.getenv("MYSQL_HOST")}:{int(os.getenv("MYSQL_PORT", 3306))}/{os.getenv("MYSQL_DB")}",
+        "sql_flag": os.getenv("SQL_LOG", False)
     }
     db = init_mysql(app, mysql_config)
     

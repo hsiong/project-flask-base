@@ -33,14 +33,14 @@ def _register_service(app):
 
 
 def create_app():
-	# 加载 .env 配置文件
-	load_env()
 	
 	# 解析命令行参数
-	parser = argparse.ArgumentParser(description="Flask with .env Configuration")
+	parser = argparse.ArgumentParser(description="Flask with .env.dev Configuration")
 	parser.add_argument('--env', type=str, default=os.getenv("FLASK_ENV", "dev"), help='Set the environment: dev, test, prod')
 	args = parser.parse_args()
 	env = args.env
+	# 加载 .env.dev 配置文件
+	load_env(filepath=f".env.{env}")
 	
 	# 初始化 Flask 应用
 	app = Flask(__name__)

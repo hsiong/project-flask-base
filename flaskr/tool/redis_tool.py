@@ -6,6 +6,7 @@ from flask_redis import FlaskRedis
 
 from flaskr.config import default_config
 
+
 def get_key(key):
     '''
     获取缓存key
@@ -17,6 +18,7 @@ def get_key(key):
 
     '''
     return f'{default_config.DATABASE_PREFIX}_{key}'
+
 
 def get_key_object(key):
     '''
@@ -30,6 +32,7 @@ def get_key_object(key):
     '''
     return f'{key}_objects'
 
+
 class ProjectRedis(FlaskRedis):
     '''
     Redis 工具类
@@ -38,13 +41,13 @@ class ProjectRedis(FlaskRedis):
     def cache_set(self, key: str, value: str):
         '''
         缓存数据
-    
+
         Args:
             key: 缓存key
             value: 缓存数据
-    
+
         Returns:
-    
+
         '''
         key = get_key(key)
         self.set(get_key(key), value)
@@ -52,12 +55,12 @@ class ProjectRedis(FlaskRedis):
     def cache_get(self, key):
         '''
         获取缓存
-    
+
         Args:
             key: 缓存key
-    
+
         Returns:
-    
+
         '''
         key = get_key(key)
         value = self.get(key)
@@ -77,9 +80,9 @@ class ProjectRedis(FlaskRedis):
             key: 缓存key
             task_id: 任务id
             task_object_json: 任务对象
-    
+
         Returns:
-    
+
         '''
         score = time.time()
         key = get_key(key)
@@ -109,8 +112,8 @@ class ProjectRedis(FlaskRedis):
         '''
         从有序集合中删除一个元素
         Args:
-            key: 
-            task_id: 
+            key:
+            task_id:
 
         Returns:
 
@@ -123,7 +126,7 @@ class ProjectRedis(FlaskRedis):
         从队列删除一个元素
 
         Args:
-            task_id: 
+            task_id:
             key: 缓存key
         Returns:
 
@@ -132,10 +135,10 @@ class ProjectRedis(FlaskRedis):
         object_key = get_key_object(key)
         self.zrem(key, task_id)
         self.hdel(object_key, task_id)
-        
-    def pop_queue(self, key: str):
+    
+    def get_queue(self, key: str):
         '''
-        从队列中弹出一个元素, 
+        从队列中获取最新的元素,
         Raises UserWarning if the key is empty.
         Args:
             key: 缓存key
@@ -150,14 +153,27 @@ class ProjectRedis(FlaskRedis):
             raise UserWarning(f"Key {key} is empty.")
         task_id = task_id[0]
         task_object_json = self.hget(object_key, task_id)
+        return task_object_json, task_id
+    
+    def pop_queue(self, key: str):
+        '''
+        从队列中弹出一个元素,
+        Raises UserWarning if the key is empty.
+        Args:
+            key: 缓存key
+        Returns:
+
+        '''
+        task_object_json, task_id = self.get_queue(key)
+        self.remove_queue_object(key, task_id)
         return task_object_json
     
     def acquire_lock(self, lock_name, acquire_timeout=10, lock_timeout=10):
         '''
         获取锁（分布式锁）
         Args:
-            acquire_timeout: 
-            lock_timeout: 
+            acquire_timeout:
+            lock_timeout:
 
         Returns:
 
@@ -174,7 +190,7 @@ class ProjectRedis(FlaskRedis):
         '''
         释放锁（分布式锁）
         Args:
-            identifier: 
+            identifier:
 
         Returns:
 

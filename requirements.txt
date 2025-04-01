@@ -18,6 +18,7 @@ requests
 
 
 # multi-thread & coroutine
+asgiref
 uvicorn
 
 # json

@@ -17,9 +17,8 @@ Flask-APScheduler # 定时任务
 requests
 
 
-# multi-thread
-gevent
-gunicorn
+# multi-thread & coroutine
+uvicorn
 
 # json
 pydantic

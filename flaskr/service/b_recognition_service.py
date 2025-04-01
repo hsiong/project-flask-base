@@ -28,7 +28,7 @@ class RecognitionService:
         # 将识别内容放入队列
         ret_json = data.json()
         redis_client = current_app.extensions['redis']
-        redis_client.put_queue(redis_constant.QUEUE_LOCK, task.id, ret_json)
+        redis_client.put_queue(redis_constant.QUEUE_BUSSINESS, task.id, ret_json)
         
         return data_task
     

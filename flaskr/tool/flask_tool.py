@@ -63,7 +63,8 @@ def create_app():
     args.port = nacos_config_dict.get('port')
     
     # 初始化 MySQL
-    db = init_mysql(app, nacos_config_dict)
+    mysql_config = nacos_config_dict.get('datasource', {})
+    db = init_mysql(app, mysql_config)
     
     # 初始化定时任务
     scheduler = APScheduler()

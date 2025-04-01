@@ -112,17 +112,16 @@ def _check_and_update_tables():
     
 
 
-def init_mysql(app, nacos_config_dict):
+def init_mysql(app, mysql_config):
     '''
     初始化 MySQL
     Args:
         app: Flask 应用
-        nacos_config_dict: Nacos 配置字典
+        mysql_config: Nacos 配置字典
 
     '''
     
     # 提取 MySQL 配置并初始化 SQLAlchemy
-    mysql_config = nacos_config_dict.get('datasource', {})
     mysql_url = f"mysql+pymysql://{mysql_config['username']}:{mysql_config['password']}@{mysql_config['url'].split('//')[1]}"
     app.config['SQLALCHEMY_DATABASE_URI'] = mysql_url
     # 当 pool_pre_ping 设置为 True 时，SQLAlchemy 会在每次获取连接之前发出一个轻量的 "ping" 请求（通常是 SELECT 1）。如果连接已经失效，SQLAlchemy 会丢弃该连接并从池中获取或创建一个新的连接。这样可以避免因为数据库连接长时间空闲后失效导致的错误。

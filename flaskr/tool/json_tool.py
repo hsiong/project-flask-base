@@ -1,4 +1,5 @@
 import json
+import os
 from enum import Enum
 from typing import List, Optional, Type, TypeVar, Union
 
@@ -23,7 +24,8 @@ def dict_to_json(data):
     
     return data.json()
 
-def json_to_dict(data:str, model_class: Type[T]) -> Union[T, List[T]]:
+
+def json_to_dict(data: str, model_class: Type[T]) -> Union[T, List[T]]:
     """
     将 JSON 字符串转换为 Pydantic 模型实例的通用函数，支持单个对象和对象列表。
 
@@ -35,10 +37,9 @@ def json_to_dict(data:str, model_class: Type[T]) -> Union[T, List[T]]:
     # 将 bytes 转换为字符串
     if isinstance(data, bytes):
         data = data.decode('utf-8')  # 或者 data.decode()，默认使用 'utf-8'
-        
+    
     if isinstance(data, str):
-        data = json.loads(data) # 解析 JSON 字符串为 Python 字典或列表
-
+        data = json.loads(data)  # 解析 JSON 字符串为 Python 字典或列表
     
     # 如果数据是列表，转换为 Pydantic 模型实例的列表
     if isinstance(data, list):
@@ -48,7 +49,7 @@ def json_to_dict(data:str, model_class: Type[T]) -> Union[T, List[T]]:
     return model_class.parse_obj(data)
 
 
-def dict_to_json_str(data: Union[BaseModel, List[BaseModel]]) -> str:
+def dict_to_json_str(data: Union[BaseModel, List[BaseModel]]):
     '''
     将字典或包含 Pydantic 模型的列表转换为 JSON 字符串
     Args:
@@ -127,8 +128,8 @@ def model_to_json_dict(data):
     '''
     
     def process_value(value):
-        if isinstance(value,
-                      Enum):  # SQLAlchemyEnum 是用于将枚举类（如 Python 的 enum.Enum）映射到数据库的字段类型。在实际的使用过程中，字段的值是枚举类的实例，而不是 
+        if isinstance(value, Enum):
+            # SQLAlchemyEnum 是用于将枚举类（如 Python 的 enum.Enum）映射到数据库的字段类型。在实际的使用过程中，字段的值是枚举类的实例，而不是
             # SQLAlchemyEnum 本身。
             return value.name
         return value
@@ -142,6 +143,63 @@ def model_to_json_dict(data):
     # 如果传入的是单个 SQLAlchemy 模型实例
     data_dict = {column.name: process_value(getattr(data, column.name)) for column in data.__table__.columns}
     return data_dict
+
+
+def extract_config(model_cls, env_dict, prefix):
+    '''
+    从环境变量中提取配置
+    Args:
+        model_cls: 模型类
+        env_dict: 环境变量字典
+        prefix: 前缀
+    Returns:
+        dict
+    '''
+    
+    # for k in model_cls.__fields__ 遍历模型类的字段
+    # if f'{prefix}{k.upper()}' in env_dict: 如果环境变量中存在该字段
+    # k: env_dict.get(f'{prefix}{k.upper()}') 从环境变量中获取该字段的值
+    model_dict = {k: env_dict.get(f'{prefix}{k.upper()}')
+                  for k in model_cls.__fields__
+                  if f'{prefix}{k.upper()}' in env_dict
+                  }
+    return model_cls(**model_dict)
+
+
+def smart_cast(val: str):
+    val = val.strip()
+    val_l = val.lower()
+    if val_l == "true":
+        return True
+    if val_l == "false":
+        return False
+    if val_l == "none":
+        return None
+    if val.isdigit():
+        return int(val)
+    try:
+        return float(val)
+    except ValueError:
+        return val
+
+
+def load_env(filepath=".env"):
+    '''
+    加载环境变量
+    '''
+    os_env_dict = {}
+    if not os.path.exists(filepath):
+        return
+    with open(filepath) as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if '=' in line:
+                key, value = line.split('=', 1)
+                os_env_dict[key.strip()] = smart_cast(value)
+    
+    return os_env_dict
 
 
 def _ret_json_success(data: Optional[dict] = None):

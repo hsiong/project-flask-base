@@ -4,24 +4,10 @@ import os
 from flask import Flask
 from flask_apscheduler import APScheduler
 
+from flaskr.tool.json_tool import load_env
 from flaskr.tool.mysql_tool import init_mysql
 from flaskr.tool.redis_tool import ProjectRedis
 
-
-def load_env(filepath=".env"):
-    os_env_dict = {}
-    if not os.path.exists(filepath):
-        return
-    with open(filepath) as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#"):
-                continue
-            if '=' in line:
-                key, value = line.split('=', 1)
-                os_env_dict[key.strip()] = value.strip()
-    
-    return os_env_dict
 
 
 def _register_service(app):

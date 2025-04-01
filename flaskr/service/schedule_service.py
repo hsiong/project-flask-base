@@ -3,8 +3,7 @@ from typing import List, Any
 
 from pydantic import BaseModel
 
-from flaskr.config import redis_constant
-
+from flaskr.constant import redis_constant
 
 executor = ThreadPoolExecutor(max_workers=1)
 

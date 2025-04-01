@@ -1,6 +1,6 @@
 from flask import current_app
 
-from flaskr.config import redis_constant
+from flaskr.constant import redis_constant
 from flaskr.repository.recognition_repository import RecognitionRepository
 from flaskr.schema.recognition_schema import RedisRecognitionSchema
 from flaskr.service.b_task_service import TaskService

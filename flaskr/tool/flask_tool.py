@@ -1,14 +1,13 @@
 import argparse
-
 import nacos
 import yaml
 from flask import Flask
 from flask_apscheduler import APScheduler
+from flaskr.tool.auth_tool import AuthConfig
 
 from flaskr.config import default_config
 from flaskr.service.schedule_service import *
 from flaskr.tool import auth_tool
-from flaskr.tool.auth_tool import AuthConfig
 from flaskr.tool.mysql_tool import init_mysql
 from flaskr.tool.redis_tool import ProjectRedis
 
@@ -64,10 +63,6 @@ def create_app():
     
     # 提取端口
     args.port = nacos_config_dict.get('port')
-    
-    # 提取认证配置
-    auth_config_dict = nacos_config_dict.get('auth')
-    auth_tool.auth_config = AuthConfig(**auth_config_dict)  # 使用解包的方式将字典的键值对传入类
     
     # 初始化 MySQL
     db = init_mysql(app, nacos_config_dict)

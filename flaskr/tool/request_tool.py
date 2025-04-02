@@ -126,14 +126,14 @@ def ret_error(message):
     return Ret(code=500, message='', data=message, success=False)
 
 
-class Ret(BaseModel, Generic[T]):
+class Ret(BaseModel):
     code: int
     message: str
-    data: Optional[T] = None
+    data: Optional[dict] = None
     success: bool = False
     
     @classmethod
-    def parse_result(cls: Type['Ret[T]'], result: str, data_type: Type[T]) -> T:
+    def parse_result(cls: Type['Ret[T]'], result: str | dict, data_type: Type[T]) -> T:
         # 如果 result 是字典，直接解析
         if isinstance(result, dict):
             r = cls.parse_obj(result)

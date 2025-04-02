@@ -1,28 +1,29 @@
-# onnx
-pytest
+
+pytest==8.3.5
+
 #onnx
 #onnxruntime-gpu
 #supervision
 #transformers # from tokenizers import Tokenizer
 
 # flask
-Flask
-Flask-SQLAlchemy
-pymysql
-Flask-Redis
-nacos-sdk-python
-PyYAML
-snowflake-id  # 雪花算法生成 ID
-Flask-APScheduler # 定时任务
-requests
+Flask==3.1.0
+Flask-SQLAlchemy==3.1.1
+pymysql==1.1.1
+Flask-Redis==0.4.0
+nacos-sdk-python==2.0.3
+PyYAML==6.0.2
+snowflake-id==1.0.2  # 雪花算法生成 ID
+Flask-APScheduler==1.13.1 # 定时任务
+requests==2.32.3
 
 
 # multi-thread & coroutine
-asgiref
-uvicorn
+asgiref==3.8.1
+uvicorn==0.34.0
 
 # json
-pydantic
+pydantic==2.11.1
 
 # ML & DL
 numpy==1.26.4

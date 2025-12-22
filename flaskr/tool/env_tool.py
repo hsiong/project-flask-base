@@ -53,6 +53,6 @@ def load_env(filepath=".env"):
                 continue
             if '=' in line:
                 key, value = line.split('=', 1)
-                os_env_dict[key.strip()] = value.strip()
+                os_env_dict[key.strip()] = smart_cast(value)
     
     return os_env_dict
